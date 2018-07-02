@@ -1,3 +1,10 @@
+Requires "mnist_train.csv" and "mnist_test.csv" . These are the original MNIST (http://yann.lecun.com/exdb/mnist/) 
+datasets in a csv format. Available at:
+
+https://drive.google.com/open?id=1b_uP0fMelgH_RD9ODNoLw5OR44l9ovya
+https://drive.google.com/open?id=1gbLr38NHArKWIRG27O6tAo_-y9VLI98Y
+
+
 #-----------------------------------------------------------------
 # Parameter Generator
 #-----------------------------------------------------------------
