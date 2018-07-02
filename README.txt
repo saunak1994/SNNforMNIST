@@ -52,11 +52,3 @@ For example: to run 10 simulations on different values of the "tau_theta" parame
 
 $python SNNTrainRoutine.py 0 20000 True tau_theta 10 
 
-
-#-----------------------------------------------------------------
-# Neuron Class Assignment
-#-----------------------------------------------------------------
-
-
-
-
