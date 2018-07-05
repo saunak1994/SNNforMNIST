@@ -212,15 +212,24 @@ examples_end = int(sys.argv[2])
 num_examples = (examples_end - examples_start)
 duration = (350+150)*num_examples*ms
 
-sim_Mode = sys.argv[3]
-if (sim_Mode == "True"):
-    paramName = sys.argv[4]
-    simNumber = int(sys.argv[5])
-    print("--- Entering Simulation Mode ---")
+Mode = 0
+simNumber = 0
+sim_Mode = sys.argv[4]
+if (sim_Mode.lower() == "dse"):
+    Mode = 1
+    paramName = sys.argv[5]
+    simNumber = int(sys.argv[6])
+    print("--- Entering Design Space Exploration Mode ---")
 
-else: 
+elif (sim_Mode.lower() == "standalone"): 
+    Mode = 2
     simNumber = 1
-    print("--- Standalone Mode ---")
+    print("--- Entering Standalone Mode ---")
+
+else:
+    print("ERROR: --- Invalid Simulation Mode ---")
+
+start_point = sys.argv[3]
 
 N_Ip=784
 
@@ -239,10 +248,12 @@ for simCount in range(0,simNumber):
     
     start_time = time.time()
     
-    if (sim_Mode == "True"):
+    if (Mode == 1):
         params = paramLoad('parameters_'+paramName+'_'+str(simCount)+'.txt')
-    else:
+    elif (Mode == 2):
         params = paramLoad('parameters_default.txt')
+    else:
+        break
     
     #-----------------------------------------------------------------
     # Stimulus generation  
@@ -306,14 +317,17 @@ for simCount in range(0,simNumber):
 
     weights = np.zeros((N_exc,784))
 
-    if (examples_start != 0):
+    if (start_point.lower() == "continue"):
         if os.path.exists('trainedWeights.csv'):
             weights = weightLoad('trainedWeights.csv')
         else:
             weights.fill(1e-4)
     
-    if (examples_start == 0): 
+    elif (start_point.lower() == "start"): 
         weights.fill(1e-4)
+    else:
+        print("ERROR: --- Invalid Start Mode ---")
+        break
 
     #Excitatory - Inhibitory
 
@@ -341,10 +355,10 @@ for simCount in range(0,simNumber):
     
     
     figure = RFMonitor(N_exc,S1,'YlOrRd')
-    if(sim_Mode == "True"):
+    if(sim_Mode.lower() == "dse"):
         figure.suptitle(paramName+' = value '+str(simCount))
-    if(sim_Mode == "False"):
-        figure.suptitle('All default values')
+    if(sim_Mode.lower() == "standalone"):
+        figure.suptitle('All current default values')
     figfile.savefig(figure)
     
 
@@ -353,10 +367,10 @@ for simCount in range(0,simNumber):
     #-----------------------------------------------------------------
 
     SaveWeights(N_exc)
-    if(sim_Mode == "True"):
+    if(sim_Mode.lower() == "dse"):
         os.rename('trainedWeights.csv', 'trainedWeights_'+paramName+'_'+str(simCount)+'.csv')
 
-    if(sim_Mode == "True"):
+    if(sim_Mode.lower() == "dse"):
         print("--- Simulation %s completed in %s (s) ---" % (simCount, (time.time() - start_time)))
 
 

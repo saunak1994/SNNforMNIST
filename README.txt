@@ -15,8 +15,8 @@ To run code:
 $ python paramGenerator.py <parameter name> <start_value> <end_value> <step_value>
 
 
-This will generate parameter files having default parameter values and concerned parameters ranging from start value to 
-end value (both included) each seperated by the step value and output the number of simulations required to loop over all
+This will generate parameter files having default parameter values and concerned parameter ranging from start value to 
+end value (both included) each separated by the step value and output the number of simulations required to loop over all
 the files. 
 
 
@@ -28,27 +28,52 @@ the files.
 To run code: 
 
 
-$python SNNTrainRoutine.py <start_value> <end_value> <simulation mode> <parameter name> <number of simulations>
+$python SNNTrainRoutine.py <start_value> <end_value> <start_mode> <operation_mode> <parameter name> <number of simulations>
 
 
-This will train the file over the training examples starting from <start_value> till (excluding) the <end_value>. If 
-training begins from example 0 (the first example of training data), the network will be built from scratch. Otherwise,
-the script will restore an older network state from an 'SNNetState' file in the current directory. 
+This will train the file over the training examples starting from <start_value> till (excluding) the <end_value>.
 
-Modes of operation: 
+<start_mode> is either: 
 
-I. Simulation mode (for Design space exploration)
-In this mode, the <simulation mode> value should be "True". In that case, you have to provide the parameter name that is
+1. "start": In which case, the training will start from scratch (initial weights). 
+
+2. "continue": In which case, the training script will look for a file "trainedWeights.csv" containing already trained weights
+upto some point and continue training from there. Allows training in laps or checkpoints. 
+
+ 
+
+<operation_mode> is either: 
+
+1. "dse" (for Design space exploration)
+In which case, you have to provide the parameter name that is
 to be investigated and also the number of simulations, as suggested by the paramGenerator.py script. The resulting 
-receptive fields will be saved in a monolithic pdf file, and trained weights will be saved in seperate files corresponding
+receptive fields will be saved in a monolithic pdf file, and trained weights will be saved in separate files corresponding
 to each parameter file previously generated. 
 
-II. Standalone mode 
-In thus mode, the <simulation mode> value should be "False". In that case, you should ignore the subsequent arguments.
+II. "standalone" (for standalone training)
+In which case, you should ignore the subsequent arguments.
 The resulting single receptive field figure will be saved in a pdf file and a single trainedWeights.csv file will be
-generated with the trained Weights in it. This will be required by the NeuronClassAssignment.py script. 
+generated with the trained Weights in it.  
 
-For example: to run 10 simulations on different values of the "tau_theta" parameter, run: 
+For example: to run 10 simulations on different values of the "tau_theta" parameter:
 
-$python SNNTrainRoutine.py 0 20000 True tau_theta 10 
+$python SNNTrainRoutine.py 0 20000 start dse tau_theta 10 
 
+to run standalone training from an already trained checkpoint:
+
+$python SNNTrainRoutine.py 20000 30000 continue standalone
+
+
+
+
+
+
+
+
+
+
+[NB: Project still in development. Contact saha@iastate.edu for further info]
+
+07.04.2018
+© Author: Saunak Saha
+Iowa State University
