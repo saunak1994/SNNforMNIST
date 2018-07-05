@@ -20,4 +20,4 @@ wmin = 0
 nu_pre = 0.005
 nu_post = 0.01
 S2.w = 0.4
-S3.w = 3
+S3.w = 10
